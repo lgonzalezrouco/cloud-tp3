@@ -108,6 +108,59 @@ module "db" {
   monitoring_interval = 0
 }
 
+module "alb" {
+  source = "terraform-aws-modules/alb/aws"
+
+  name     = "${var.app_name}-alb"
+  vpc_id   = module.vpc.vpc_id
+  subnets  = module.vpc.public_subnets
+  internal = false
+
+  # Security Group
+  security_groups = [module.alb_sg.security_group_id]
+
+  # Access logs opcional
+  access_logs = {
+    bucket  = "${var.app_name}-alb-logs"
+    enabled = false
+  }
+
+  listeners = {
+    http = {
+      port     = 80
+      protocol = "HTTP"
+      forward = {
+        target_group_key = "backend"
+      }
+    }
+  }
+
+  target_groups = {
+    backend = {
+      name_prefix      = "back"
+      protocol         = "HTTP"
+      port             = 3000
+      target_type      = "ip"
+      create_attachment = false
+
+      health_check = {
+        path                = "/"
+        healthy_threshold   = 3
+        unhealthy_threshold = 2
+        timeout             = 5
+        interval            = 30
+        matcher             = "200-399"
+      }
+    }
+  }
+
+
+  tags = {
+    Environment = "Development"
+    Project     = var.app_name
+  }
+}
+
 # --- ECS Cluster ---
 resource "aws_ecs_cluster" "this" {
   name = "${var.app_name}-cluster"
@@ -167,6 +220,12 @@ resource "aws_ecs_service" "backend" {
     subnets          = module.vpc.private_subnets
     security_groups  = [module.backend_sg.security_group_id]
     assign_public_ip = false
+  }
+
+  load_balancer {
+    target_group_arn = module.alb.target_groups["backend"].arn
+    container_name   = "backend"
+    container_port   = 3000
   }
 
   deployment_minimum_healthy_percent = 50
