@@ -83,13 +83,14 @@ module "db" {
   instance_class       = "db.t3.small"
   allocated_storage    = 100
   storage_type         = "gp2"
-  multi_az             = true
+  # multi_az             = true
   major_engine_version = "17.4"
   family               = "postgres17"
 
-  db_name  = var.db_name
-  username = var.db_username
-  password = var.db_password
+  db_name                     = var.db_name
+  username                    = var.db_username
+  password                    = var.db_password
+  manage_master_user_password = false
 
   vpc_security_group_ids = [module.rds_sg.security_group_id]
 
@@ -137,10 +138,10 @@ module "alb" {
 
   target_groups = {
     backend = {
-      name_prefix      = "back"
-      protocol         = "HTTP"
-      port             = 3000
-      target_type      = "ip"
+      name_prefix       = "back"
+      protocol          = "HTTP"
+      port              = 3000
+      target_type       = "ip"
       create_attachment = false
 
       health_check = {
@@ -200,7 +201,7 @@ resource "aws_ecs_task_definition" "backend" {
           value = var.db_username
         },
         {
-          name  = "DB_PASS"
+          name  = "DB_PASSWORD"
           value = var.db_password
         }
       ]
