@@ -44,7 +44,7 @@ resource "aws_s3_object" "index" {
   key          = "index.html"
   source       = "dist/index.html"
   content_type = "text/html"
-  etag         = filemd5("dist/index.html")
+  etag         = try(filemd5("dist/index.html"), null)
 
   # Asegurar que el frontend esté construido antes de subir
   depends_on = [null_resource.build_frontend]
@@ -56,7 +56,7 @@ resource "aws_s3_object" "favicon" {
   key          = "favicon.ico"
   source       = "dist/favicon.ico"
   content_type = "image/x-icon"
-  etag         = filemd5("dist/favicon.ico")
+  etag         = try(filemd5("dist/favicon.ico"), null)
 
   depends_on = [null_resource.build_frontend]
 }
@@ -69,7 +69,7 @@ resource "aws_s3_object" "css_files" {
   key          = "assets/${each.value}"
   source       = "dist/assets/${each.value}"
   content_type = "text/css"
-  etag         = filemd5("dist/assets/${each.value}")
+  etag         = try(filemd5("dist/assets/${each.value}"), null)
 
   depends_on = [null_resource.build_frontend]
 }
@@ -82,7 +82,7 @@ resource "aws_s3_object" "js_files" {
   key          = "assets/${each.value}"
   source       = "dist/assets/${each.value}"
   content_type = "application/javascript"
-  etag         = filemd5("dist/assets/${each.value}")
+  etag         = try(filemd5("dist/assets/${each.value}"), null)
 
   depends_on = [null_resource.build_frontend]
 }

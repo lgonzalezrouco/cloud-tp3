@@ -53,6 +53,10 @@ if errorlevel 1 (
 
 echo Copying build files to dist directory...
 cd ..
+REM Create dist directory if it doesn't exist
+if not exist "dist" (
+    mkdir dist
+)
 if exist "dist" (
     rmdir /s /q dist
 )

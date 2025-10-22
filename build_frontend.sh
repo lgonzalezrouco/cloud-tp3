@@ -45,6 +45,8 @@ npm run build
 
 echo "Copying build files to dist directory..."
 cd ..
+# Create dist directory if it doesn't exist
+mkdir -p dist
 rm -rf dist/*
 cp -r "$FRONTEND_DIR/dist/"* dist/
 

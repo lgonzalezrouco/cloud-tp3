@@ -5,10 +5,12 @@
 Antes de ejecutar `terraform apply`, asegúrate de tener instalado:
 
 1. **Node.js** - [Descargar aquí](https://nodejs.org/)
+
    - Versión recomendada: 18 o superior
    - Incluye npm automáticamente
 
 2. **Git for Windows** - [Descargar aquí](https://git-scm.com/download/win)
+
    - Necesario para clonar el repositorio del frontend
 
 3. **Terraform** - [Descargar aquí](https://www.terraform.io/downloads)
@@ -42,6 +44,7 @@ Cuando ejecutes `terraform apply`:
 ## 📝 Comandos Útiles
 
 ### Aplicar infraestructura
+
 ```cmd
 terraform init
 terraform plan
@@ -49,6 +52,7 @@ terraform apply
 ```
 
 ### Ver URLs generadas
+
 ```cmd
 terraform output website_url
 terraform output frontend_backend_url
@@ -56,12 +60,14 @@ terraform output alb_dns_name
 ```
 
 ### Reconstruir solo el frontend
+
 ```cmd
 terraform taint null_resource.build_frontend
 terraform apply
 ```
 
 ### Construcción manual del frontend
+
 ```cmd
 REM Obtener DNS del ALB
 for /f "delims=" %%i in ('terraform output -raw alb_dns_name') do set ALB_DNS=%%i
@@ -77,6 +83,7 @@ build_frontend.bat %ALB_DNS%
 **Causa**: Node.js no está instalado o no está en el PATH
 
 **Solución**:
+
 1. Instala Node.js desde [nodejs.org](https://nodejs.org/)
 2. **Reinicia CMD/PowerShell** (importante)
 3. Verifica: `node --version`
@@ -86,6 +93,7 @@ build_frontend.bat %ALB_DNS%
 **Causa**: Git no está instalado o no está en el PATH
 
 **Solución**:
+
 1. Instala Git for Windows desde [git-scm.com](https://git-scm.com/download/win)
 2. Durante la instalación, marca "Add Git to PATH"
 3. **Reinicia CMD/PowerShell**
@@ -94,10 +102,12 @@ build_frontend.bat %ALB_DNS%
 ### ❌ Error: "npm install failed"
 
 **Posibles causas**:
+
 - Sin conexión a internet
 - Firewall corporativo bloqueando npm
 
 **Solución**:
+
 1. Verifica tu conexión a internet
 2. Si estás en una red corporativa, consulta con IT sobre proxy de npm
 3. Configura proxy si es necesario:
@@ -111,18 +121,21 @@ build_frontend.bat %ALB_DNS%
 **Causa**: Permisos insuficientes
 
 **Solución**:
+
 - Ejecuta CMD como **Administrador**
 - Clic derecho en CMD → "Ejecutar como administrador"
 
 ### ❌ El frontend no se actualiza
 
 **Solución**:
+
 ```cmd
 terraform taint null_resource.build_frontend
 terraform apply
 ```
 
 O manualmente:
+
 ```cmd
 rmdir /s /q frontend-source
 rmdir /s /q dist
@@ -167,4 +180,3 @@ Si tienes problemas:
 ## ✨ ¡Eso es todo!
 
 Solo necesitas ejecutar `terraform apply` y todo se construye automáticamente. 🎉
-

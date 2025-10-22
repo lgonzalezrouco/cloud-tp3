@@ -29,7 +29,7 @@ variable "db_password" {
 }
 
 variable "s3_bucket_name" {
-  default     = "matchmarket-testing-emi"
+  default     = "matchmarket-testing-lucas"
   description = "Name of the S3 bucket"
   type        = string
 }
