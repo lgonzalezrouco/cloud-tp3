@@ -67,5 +67,8 @@ resource "aws_ecs_service" "backend" {
 
   deployment_minimum_healthy_percent = 50
   deployment_maximum_percent         = 200
+
+  # Asegurar que el ALB y la base de datos estén listos antes de iniciar el servicio
+  depends_on = [module.alb, module.db]
 }
 
