@@ -36,6 +36,8 @@ resource "aws_s3_bucket_policy" "frontend" {
       }
     ]
   })
+
+  depends_on = [module.s3_bucket, aws_s3_bucket_website_configuration.frontend]
 }
 
 # Subir index.html
