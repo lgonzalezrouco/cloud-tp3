@@ -36,12 +36,10 @@ if ($LASTEXITCODE -ne 0) {
     Write-Host "ERROR: Failed to retrieve login password" -ForegroundColor Red
     exit 1 
 }
-Write-Host "Login password: $loginPassword" -ForegroundColor Yellow
 
 # Usar invoke expression para ejecutar el comando completo con pipe
 $loginCommand = "aws ecr get-login-password --region $($AWS_REGION) | docker login --username AWS --password $loginPassword $ECR_REGISTRY"
-Write-Host "Login command: $loginCommand" -ForegroundColor Yellow
-Invoke-Expression $loginCommand
+$loginCommand
 if ($LASTEXITCODE -ne 0) { 
     Write-Host "ERROR: Failed to login to ECR" -ForegroundColor Red
     exit 1 
