@@ -29,7 +29,18 @@ variable "db_password" {
 }
 
 variable "s3_bucket_name" {
-  default     = "matchmarket-testing-lucas"
   description = "Name of the S3 bucket"
+  type        = string
+}
+
+variable "use_dockerhub" {
+  default     = false
+  description = "Si true, usa imagen de Docker Hub. Si false, construye y sube a ECR (requiere Docker instalado)"
+  type        = bool
+}
+
+variable "dockerhub_image" {
+  default     = "emin364/cloud-backend:latest"
+  description = "Imagen de Docker Hub a usar cuando use_dockerhub = true"
   type        = string
 }
