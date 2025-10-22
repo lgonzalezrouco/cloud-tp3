@@ -1,5 +1,6 @@
 module "alb" {
-  source = "terraform-aws-modules/alb/aws"
+  source  = "terraform-aws-modules/alb/aws"
+  version = "~> 9.0"
 
   name     = "${var.app_name}-alb"
   vpc_id   = module.vpc.vpc_id
@@ -9,7 +10,10 @@ module "alb" {
   # Security Group
   security_groups = [module.alb_sg.security_group_id]
 
-  # Access logs opcional
+  # Enable deletion protection for production
+  enable_deletion_protection = false  # Set to true for production
+
+  # Access logs - disabled for development
   access_logs = {
     bucket  = "${var.app_name}-alb-logs"
     enabled = false

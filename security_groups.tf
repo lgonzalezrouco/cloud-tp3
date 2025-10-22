@@ -18,13 +18,14 @@ module "backend_sg" {
   description = "Security group for alb with custom ports open within VPC"
   vpc_id      = module.vpc.vpc_id
 
-  ingress_with_cidr_blocks = [
+  # This is the corrected block
+  ingress_with_source_security_group_id = [
     {
-      from_port   = 3000
-      to_port     = 3000
-      protocol    = "tcp"
-      description = "Allow port 3000"
-      cidr_blocks = module.vpc.vpc_cidr_block
+      from_port                = 3000
+      to_port                  = 3000
+      protocol                 = "tcp"
+      description              = "Allow traffic from ALB"
+      source_security_group_id = module.alb_sg.security_group_id
     }
   ]
 
@@ -48,4 +49,3 @@ module "rds_sg" {
 
   egress_rules = ["all-all"]
 }
-

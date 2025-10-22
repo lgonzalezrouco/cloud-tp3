@@ -1,9 +1,10 @@
 module "s3_bucket" {
   source              = "./modules/s3"
   bucket_name         = var.s3_bucket_name
-  block_public_access = false # Permitir acceso público para el sitio web
+  block_public_access = false # Allow public access for website hosting
   tags = {
-    Owner = var.app_name
+    Owner       = var.app_name
+    Environment = "production"
   }
 }
 

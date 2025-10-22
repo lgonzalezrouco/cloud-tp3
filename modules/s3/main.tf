@@ -7,6 +7,11 @@ resource "aws_s3_bucket" "this" {
       Name = var.bucket_name
     }
   )
+
+  # Prevent accidental deletion of bucket
+  lifecycle {
+    prevent_destroy = false  # Set to true for production
+  }
 }
 
 resource "aws_s3_bucket_versioning" "this" {
