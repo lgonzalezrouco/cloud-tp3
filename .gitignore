@@ -1,0 +1,25 @@
+# Ignore Terraform state files
+*.tfstate
+*.tfstate.backup
+*.tfplan
+
+# Ignore .terraform directory
+/*/.terraform/
+
+# Ignore any local override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
+
+*.pem
+
+terraform/dist/
+terraform/frontend-source/
+terraform/lambda-src/*
+!terraform/lambda-src/requirements.txt
+!terraform/lambda-src/app.py
