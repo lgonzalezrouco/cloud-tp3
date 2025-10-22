@@ -27,3 +27,9 @@ variable "db_password" {
   description = "Password of the database"
   type        = string
 }
+
+variable "s3_bucket_name" {
+  default     = "matchmarket-testing-emi"
+  description = "Name of the S3 bucket"
+  type        = string
+}

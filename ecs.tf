@@ -22,11 +22,12 @@ resource "aws_ecs_task_definition" "backend" {
   cpu                      = 512  # 0.5 vCPU
   memory                   = 1024 # 1 GB RAM
   execution_role_arn       = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/LabRole"
+  task_role_arn            = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/LabRole"
 
   container_definitions = jsonencode([
     {
       name      = "backend"
-      image     = "emin364/cloud-backend:1.0"
+      image     = "emin364/cloud-backend:latest"
       essential = true
       portMappings = [
         {
@@ -53,16 +54,12 @@ resource "aws_ecs_task_definition" "backend" {
           value = var.db_password
         },
         {
-          name: "AWS_ACCESS_KEY_ID",
-          value: data.aws_caller_identity.current.account_id
+          name  = "AWS_REGION"
+          value = var.aws_region
         },
         {
-          name: "AWS_SECRET_ACCESS_KEY",
-          value: data.aws_caller_identity.current.secret_access_key
-        },
-        {
-          name: "AWS_S3_BUCKET",
-          value: var.s3_bucket_name
+          name  = "AWS_S3_BUCKET"
+          value = var.s3_bucket_name
         }
       ]
       logConfiguration = {
