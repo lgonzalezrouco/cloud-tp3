@@ -1,3 +1,14 @@
+# --- CloudWatch Log Group ---
+resource "aws_cloudwatch_log_group" "ecs_logs" {
+  name              = "/ecs/${var.app_name}"
+  retention_in_days = 7
+
+  tags = {
+    Application = var.app_name
+    Environment = "production"
+  }
+}
+
 # --- ECS Cluster ---
 resource "aws_ecs_cluster" "this" {
   name = "${var.app_name}-cluster"
@@ -10,6 +21,7 @@ resource "aws_ecs_task_definition" "backend" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = 512  # 0.5 vCPU
   memory                   = 1024 # 1 GB RAM
+  execution_role_arn       = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/LabRole"
 
   container_definitions = jsonencode([
     {
@@ -41,6 +53,14 @@ resource "aws_ecs_task_definition" "backend" {
           value = var.db_password
         }
       ]
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          "awslogs-group"         = aws_cloudwatch_log_group.ecs_logs.name
+          "awslogs-region"        = var.aws_region
+          "awslogs-stream-prefix" = "backend"
+        }
+      }
     }
   ])
 }

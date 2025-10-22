@@ -18,3 +18,13 @@ output "db_endpoint" {
   value       = module.db.db_instance_endpoint
 }
 
+output "cloudwatch_log_group" {
+  description = "Nombre del CloudWatch Log Group para los logs de ECS"
+  value       = aws_cloudwatch_log_group.ecs_logs.name
+}
+
+output "cloudwatch_logs_url" {
+  description = "URL directa para ver los logs en la consola de AWS"
+  value       = "https://${var.aws_region}.console.aws.amazon.com/cloudwatch/home?region=${var.aws_region}#logsV2:log-groups/log-group/${replace(aws_cloudwatch_log_group.ecs_logs.name, "/", "$252F")}"
+}
+
