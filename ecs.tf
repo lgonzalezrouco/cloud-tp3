@@ -51,6 +51,18 @@ resource "aws_ecs_task_definition" "backend" {
         {
           name  = "DB_PASSWORD"
           value = var.db_password
+        },
+        {
+          name: "AWS_ACCESS_KEY_ID",
+          value: data.aws_caller_identity.current.account_id
+        },
+        {
+          name: "AWS_SECRET_ACCESS_KEY",
+          value: data.aws_caller_identity.current.secret_access_key
+        },
+        {
+          name: "AWS_S3_BUCKET",
+          value: var.s3_bucket_name
         }
       ]
       logConfiguration = {
