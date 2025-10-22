@@ -1,0 +1,6 @@
+/.terraform
+/dist
+terraform.tfstate.backup
+terraform.tfstate
+frontend-source/
+.terraform.lock.hcl
