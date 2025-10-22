@@ -16,7 +16,7 @@ resource "null_resource" "build_frontend" {
 }
 
 # Output para mostrar la URL del backend configurada
-output "frontend_backend_url" {
+output "backend_url" {
   description = "URL del backend configurada en el frontend"
   value       = "http://${module.alb.dns_name}"
 }
