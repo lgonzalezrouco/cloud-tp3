@@ -12,6 +12,7 @@ module "db" {
   storage_type         = "gp2"
   major_engine_version = "17.4"
   family               = "postgres17"
+  multi_az             = true
 
   db_name                     = var.db_name
   username                    = var.db_username
@@ -29,17 +30,6 @@ module "db" {
   # DB subnet group
   create_db_subnet_group = true
   subnet_ids             = module.vpc.private_subnets
-
-  # Backup configuration
-  backup_retention_period   = 7    # Keep backups for 7 days
-  backup_window            = "03:00-04:00"
-  maintenance_window       = "Mon:04:00-Mon:05:00"
-  skip_final_snapshot      = false # Create final snapshot on deletion
-  final_snapshot_identifier_prefix = "matchmarket-final"
-  copy_tags_to_snapshot    = true
-  
-  # Enable automated backups
-  enabled_cloudwatch_logs_exports = ["postgresql", "upgrade"]
   
   # Performance Insights
   performance_insights_enabled = false  # Set to true for production monitoring
