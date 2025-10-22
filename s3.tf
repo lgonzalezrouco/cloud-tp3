@@ -65,24 +65,24 @@ resource "aws_s3_object" "favicon" {
 resource "aws_s3_object" "css_files" {
   for_each = fileset("dist/assets", "*.css")
 
+  depends_on = [null_resource.build_frontend]
+
   bucket       = module.s3_bucket.bucket_id
   key          = "assets/${each.value}"
   source       = "dist/assets/${each.value}"
   content_type = "text/css"
   etag         = try(filemd5("dist/assets/${each.value}"), null)
-
-  depends_on = [null_resource.build_frontend]
 }
 
 # Subir archivos JS de assets
 resource "aws_s3_object" "js_files" {
   for_each = fileset("dist/assets", "*.js")
 
+  depends_on = [null_resource.build_frontend]
+
   bucket       = module.s3_bucket.bucket_id
   key          = "assets/${each.value}"
   source       = "dist/assets/${each.value}"
   content_type = "application/javascript"
   etag         = try(filemd5("dist/assets/${each.value}"), null)
-
-  depends_on = [null_resource.build_frontend]
 }
