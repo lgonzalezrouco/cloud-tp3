@@ -6,7 +6,6 @@ module "alb" {
   vpc_id   = module.vpc.vpc_id
   subnets  = module.vpc.public_subnets
   internal = false
-  enable_deletion_protection = false
   
   # Security Group
   security_groups = [module.alb_sg.security_group_id]
