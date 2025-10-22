@@ -45,6 +45,9 @@ resource "aws_s3_object" "index" {
   source       = "dist/index.html"
   content_type = "text/html"
   etag         = filemd5("dist/index.html")
+
+  # Asegurar que el frontend esté construido antes de subir
+  depends_on = [null_resource.build_frontend]
 }
 
 # Subir favicon.ico
@@ -54,6 +57,8 @@ resource "aws_s3_object" "favicon" {
   source       = "dist/favicon.ico"
   content_type = "image/x-icon"
   etag         = filemd5("dist/favicon.ico")
+
+  depends_on = [null_resource.build_frontend]
 }
 
 # Subir archivos CSS de assets
@@ -65,6 +70,8 @@ resource "aws_s3_object" "css_files" {
   source       = "dist/assets/${each.value}"
   content_type = "text/css"
   etag         = filemd5("dist/assets/${each.value}")
+
+  depends_on = [null_resource.build_frontend]
 }
 
 # Subir archivos JS de assets
@@ -76,4 +83,6 @@ resource "aws_s3_object" "js_files" {
   source       = "dist/assets/${each.value}"
   content_type = "application/javascript"
   etag         = filemd5("dist/assets/${each.value}")
+
+  depends_on = [null_resource.build_frontend]
 }
