@@ -28,3 +28,7 @@ output "cloudwatch_logs_url" {
   value       = "https://${var.aws_region}.console.aws.amazon.com/cloudwatch/home?region=${var.aws_region}#logsV2:log-groups/log-group/${replace(aws_cloudwatch_log_group.ecs_logs.name, "/", "$252F")}"
 }
 
+output "lambda_callback_url" {
+  description = "URL pública de la Lambda de callback Cognito (si se creó)"
+  value       = aws_lambda_function_url.callback_url.function_url
+}

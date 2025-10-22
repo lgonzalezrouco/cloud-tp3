@@ -2,6 +2,7 @@
   "name": "lambda_code",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "callback.js",
   "scripts": {
     "start": "node callback.js",

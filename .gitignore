@@ -7,3 +7,5 @@ terraform.tfstate.backup
 /frontend-source
 
 .env
+/lambda/node_modules
+/lambda/lambda.zip
