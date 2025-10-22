@@ -5,14 +5,21 @@ REM Variables
 set FRONTEND_REPO=https://github.com/gcandisano/CloudFront.git
 set FRONTEND_DIR=frontend-source
 set ALB_URL=%1
+set IMAGES_BUCKET_URL=%2
 
 if "%ALB_URL%"=="" (
     echo Error: ALB URL is required as first argument
     exit /b 1
 )
 
+if "%IMAGES_BUCKET_URL%"=="" (
+    echo Error: Images bucket URL is required as second argument
+    exit /b 1
+)
+
 echo ==========================================
 echo Building Frontend with Backend URL: %ALB_URL%
+echo Images Bucket URL: %IMAGES_BUCKET_URL%
 echo ==========================================
 
 REM Clone or update repository
@@ -29,10 +36,11 @@ if exist "%FRONTEND_DIR%" (
 
 cd "%FRONTEND_DIR%"
 
-REM Create .env file with ALB URL
+REM Create .env file with ALB URL and Images Bucket URL
 echo Creating .env file...
 (
 echo VITE_API_BASE_URL=http://%ALB_URL%
+echo VITE_S3_URL=%IMAGES_BUCKET_URL%
 echo VITE_APP_TITLE=Match Market
 echo VITE_APP_DESCRIPTION=Tu marketplace de confianza
 ) > .env

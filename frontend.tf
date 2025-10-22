@@ -10,7 +10,7 @@ resource "null_resource" "build_frontend" {
 
   provisioner "local-exec" {
     # Detectar sistema operativo y usar el script apropiado
-    command     = substr(pathexpand("~"), 0, 1) == "/" ? "bash build_frontend.sh ${module.alb.dns_name}" : "build_frontend.bat ${module.alb.dns_name}"
+    command     = substr(pathexpand("~"), 0, 1) == "/" ? "bash build_frontend.sh ${module.alb.dns_name} https://${module.s3_images_bucket.bucket_id}.s3.${var.aws_region}.amazonaws.com" : "build_frontend.bat ${module.alb.dns_name} https://${module.s3_images_bucket.bucket_id}.s3.${var.aws_region}.amazonaws.com"
     interpreter = substr(pathexpand("~"), 0, 1) == "/" ? ["bash", "-c"] : ["cmd", "/C"]
   }
 }

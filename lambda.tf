@@ -1,31 +1,5 @@
 # Lambda zip file should be built manually using build_lambda.sh or build_lambda.bat
 
-resource "aws_iam_role" "lambda_exec" {
-  name = "${var.app_name}-lambda-exec"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Principal = {
-          Service = "lambda.amazonaws.com"
-        }
-      }
-    ]
-  })
-
-  tags = {
-    Application = var.app_name
-  }
-}
-
-resource "aws_iam_role_policy_attachment" "lambda_basic" {
-  role       = aws_iam_role.lambda_exec.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-}
-
 data "aws_secretsmanager_secret_version" "client_secret" {
   count     = var.client_secret_arn != "" ? 1 : 0
   secret_id = var.client_secret_arn
@@ -37,7 +11,7 @@ resource "aws_lambda_function" "cognito_callback" {
   source_code_hash = filebase64sha256("lambda/lambda.zip")
   handler          = "callback.handler"
   runtime          = "nodejs18.x"
-  role             = aws_iam_role.lambda_exec.arn
+  role             = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/LabRole"
 
   environment {
     variables = {
