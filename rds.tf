@@ -9,7 +9,7 @@ module "db" {
   instance_class       = "db.t3.small"
   allocated_storage    = 20
   max_allocated_storage = 100            # Auto-scaling enabled up to 100GB
-  storage_type         = "gp3"           # gp3 is more cost-effective than gp2
+  storage_type         = "gp2"
   major_engine_version = "17.4"
   family               = "postgres17"
 
