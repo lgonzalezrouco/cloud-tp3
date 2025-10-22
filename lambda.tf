@@ -1,11 +1,4 @@
-data "external" "build_lambda" {
-  program = [
-    "bash",
-    "${path.module}/build_lambda.sh",
-    "${path.module}/lambda",
-    "${path.module}/lambda.zip"
-  ]
-}
+# Lambda zip file should be built manually using build_lambda.sh or build_lambda.bat
 
 resource "aws_iam_role" "lambda_exec" {
   name = "${var.app_name}-lambda-exec"
@@ -40,8 +33,8 @@ data "aws_secretsmanager_secret_version" "client_secret" {
 
 resource "aws_lambda_function" "cognito_callback" {
   function_name    = "${var.app_name}-cognito-callback"
-  filename         = data.external.build_lambda.result.zip
-  source_code_hash = filebase64sha256(data.external.build_lambda.result.zip)
+  filename         = "lambda/lambda.zip"
+  source_code_hash = filebase64sha256("lambda/lambda.zip")
   handler          = "callback.handler"
   runtime          = "nodejs18.x"
   role             = aws_iam_role.lambda_exec.arn

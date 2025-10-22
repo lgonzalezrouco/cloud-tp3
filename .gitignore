@@ -22,4 +22,4 @@ override.tf.json
 *_override.tf
 *_override.tf.json
 /lambda/node_modules
-/lambda/lambda.zip
+backend-source/
