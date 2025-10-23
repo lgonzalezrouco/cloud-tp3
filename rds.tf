@@ -28,7 +28,7 @@ module "db" {
 
   # DB subnet group
   create_db_subnet_group = true
-  subnet_ids             = module.vpc.private_subnets
+  subnet_ids             = [module.vpc.private_subnets[2], module.vpc.private_subnets[3]]
   
   # Performance Insights
   performance_insights_enabled = false  # Set to true for production monitoring
