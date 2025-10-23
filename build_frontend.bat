@@ -43,6 +43,10 @@ echo VITE_API_BASE_URL=http://%ALB_URL%
 echo VITE_S3_URL=%IMAGES_BUCKET_URL%
 echo VITE_APP_TITLE=Match Market
 echo VITE_APP_DESCRIPTION=Tu marketplace de confianza
+echo VITE_COGNITO_DOMAIN=asd
+echo VITE_COGNITO_CLIENT_ID=asd
+echo VITE_REDIRECT_URI=asd
+echo VITE_FRONTEND_URL=asd
 ) > .env
 
 echo Installing dependencies...

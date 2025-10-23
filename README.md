@@ -68,10 +68,10 @@ Después de que `terraform apply` termine, construye el frontend:
 
 ```bash
 # Linux/Mac/Git Bash
-bash scripts/build_frontend.sh
+bash build_frontend.sh
 
 # Windows PowerShell (si no tienes Git Bash)
-.\scripts\build_frontend.ps1
+.\build_frontend.bat
 ```
 
 ## 🔀 Configuración de Imagen del Backend

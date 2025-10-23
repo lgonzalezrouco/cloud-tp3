@@ -43,6 +43,10 @@ VITE_API_BASE_URL=http://${ALB_URL}
 VITE_S3_URL=${IMAGES_BUCKET_URL}
 VITE_APP_TITLE=Match Market
 VITE_APP_DESCRIPTION=Tu marketplace de confianza
+VITE_COGNITO_DOMAIN=asd
+VITE_COGNITO_CLIENT_ID=asd
+VITE_REDIRECT_URI=asd
+VITE_FRONTEND_URL=asd
 EOF
 
 echo "Installing dependencies..."
