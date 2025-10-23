@@ -45,6 +45,10 @@ terraform plan
 terraform apply
 ```
 
+## Posibles errores
+ - "Error: fileset function return an inconsistent result". Solución: ejecutar `terraform apply` nuevamente.
+
+
 ### 3. Desplegar TODO
 
 ```bash
