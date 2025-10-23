@@ -1,16 +1,17 @@
 module "db" {
-  source = "terraform-aws-modules/rds/aws"
+  source  = "terraform-aws-modules/rds/aws"
 
   identifier = "matchmarket-db2"
 
   engine               = "postgres"
   engine_version       = "17.4"
   instance_class       = "db.t3.small"
-  allocated_storage    = 100
+  allocated_storage    = 20
+  max_allocated_storage = 100            # Auto-scaling enabled up to 100GB
   storage_type         = "gp2"
-  # multi_az             = true
   major_engine_version = "17.4"
   family               = "postgres17"
+  multi_az             = true
 
   db_name                     = var.db_name
   username                    = var.db_username
@@ -20,17 +21,25 @@ module "db" {
   vpc_security_group_ids = [module.rds_sg.security_group_id]
 
   tags = {
-    Owner = var.app_name
+    Owner       = var.app_name
+    Environment = "production"
+    ManagedBy   = "Terraform"
   }
 
   # DB subnet group
   create_db_subnet_group = true
-  subnet_ids             = [module.vpc.private_subnets[0], module.vpc.private_subnets[1]]
+  subnet_ids             = [module.vpc.private_subnets[2], module.vpc.private_subnets[3]]
+  
+  # Performance Insights
+  performance_insights_enabled = false  # Set to true for production monitoring
+  
+  # Database Deletion Protection - enable for production
+  deletion_protection = false  # Set to true for production
 
-  /* # Database Deletion Protection
-  deletion_protection = true */
-
-  # Disable Enhanced Monitoring
+  # Disable Enhanced Monitoring for cost savings
   monitoring_interval = 0
+  
+  # Apply changes immediately (set to false for production)
+  apply_immediately = true
 }
 

@@ -10,6 +10,12 @@ resource "aws_ecr_repository" "backend" {
   tags = {
     Application = var.app_name
     Environment = "production"
+    ManagedBy   = "Terraform"
+  }
+
+  # Prevent accidental deletion of ECR repository
+  lifecycle {
+    prevent_destroy = false  # Set to true for production
   }
 }
 

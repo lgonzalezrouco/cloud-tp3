@@ -26,6 +26,12 @@ variable "db_password" {
   default     = "tp-cloud-g7"
   description = "Password of the database"
   type        = string
+  sensitive   = true
+  
+  validation {
+    condition     = length(var.db_password) >= 8
+    error_message = "Database password must be at least 8 characters long."
+  }
 }
 
 variable "s3_bucket_name" {
@@ -43,4 +49,35 @@ variable "dockerhub_image" {
   default     = "emin364/cloud-backend:latest"
   description = "Imagen de Docker Hub a usar cuando use_dockerhub = true"
   type        = string
+}
+
+variable "cognito_domain" {
+  description = "Cognito domain prefix (ej: mi-userpool)"
+  type        = string
+  default     = "cognito-domain"
+}
+
+variable "client_secret" {
+  description = "Client secret (opcional). Si está vacío, puede usarse client_secret_arn."
+  type        = string
+  default     = "client-secret"
+  sensitive   = true
+}
+
+variable "client_secret_arn" {
+  description = "ARN del secreto en AWS Secrets Manager que contiene el client secret (opcional)"
+  type        = string
+  default     = ""
+}
+
+variable "cognito_redirect_uri" {
+  description = "Redirect URI base (sin /callback) que configuraste en Cognito"
+  type        = string
+  default     = "redirect-uri"
+}
+
+variable "frontend_url" {
+  description = "URL pública del frontend para hacer el redirect con tokens"
+  type        = string
+  default     = "frontend-url"
 }

@@ -12,6 +12,17 @@ resource "aws_cloudwatch_log_group" "ecs_logs" {
 # --- ECS Cluster ---
 resource "aws_ecs_cluster" "this" {
   name = "${var.app_name}-cluster"
+
+  setting {
+    name  = "containerInsights"
+    value = "enabled"  # Enable Container Insights for better monitoring
+  }
+
+  tags = {
+    Application = var.app_name
+    Environment = "production"
+    ManagedBy   = "Terraform"
+  }
 }
 
 # --- ECS Task Definition ---
@@ -97,8 +108,16 @@ resource "aws_ecs_service" "backend" {
   deployment_minimum_healthy_percent = 50
   deployment_maximum_percent         = 200
 
-  # Asegurar que el ALB y la base de datos estén listos
-  # Si usa ECR, también espera a que la imagen esté construida
+  # Enable service discovery and better health checks
+  health_check_grace_period_seconds = 60
+
+  tags = {
+    Application = var.app_name
+    Environment = "production"
+    ManagedBy   = "Terraform"
+  }
+
+  # Ensure ALB and database are ready before deploying service
   depends_on = [
     module.alb,
     module.db

@@ -1,9 +1,10 @@
 module "s3_bucket" {
   source              = "./modules/s3"
   bucket_name         = var.s3_bucket_name
-  block_public_access = false # Permitir acceso público para el sitio web
+  block_public_access = false # Allow public access for website hosting
   tags = {
-    Owner = var.app_name
+    Owner       = var.app_name
+    Environment = "production"
   }
 }
 
@@ -87,4 +88,59 @@ resource "aws_s3_object" "js_files" {
   source       = "dist/assets/${each.value}"
   content_type = "application/javascript"
   etag         = try(filemd5("dist/assets/${each.value}"), null)
+}
+
+# S3 bucket for product images with public read/write access
+module "s3_images_bucket" {
+  source              = "./modules/s3"
+  bucket_name         = "${var.s3_bucket_name}-images"
+  block_public_access = false # Allow public access for image uploads
+  tags = {
+    Owner       = var.app_name
+    Environment = "production"
+    Purpose     = "product-images"
+  }
+}
+
+# CORS configuration for image uploads
+resource "aws_s3_bucket_cors_configuration" "images_cors" {
+  bucket = module.s3_images_bucket.bucket_id
+
+  cors_rule {
+    allowed_headers = ["*"]
+    allowed_methods = ["GET", "PUT", "POST", "DELETE", "HEAD"]
+    allowed_origins = ["*"]
+    expose_headers  = ["ETag"]
+    max_age_seconds = 3000
+  }
+}
+
+# Bucket policy for public read/write access to images
+resource "aws_s3_bucket_policy" "images_public" {
+  bucket = module.s3_images_bucket.bucket_id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "PublicReadGetObject"
+        Effect    = "Allow"
+        Principal = "*"
+        Action    = "s3:GetObject"
+        Resource  = "${module.s3_images_bucket.bucket_arn}/*"
+      },
+      {
+        Sid       = "PublicWritePutObject"
+        Effect    = "Allow"
+        Principal = "*"
+        Action    = [
+          "s3:PutObject",
+          "s3:PutObjectAcl"
+        ]
+        Resource = "${module.s3_images_bucket.bucket_arn}/*"
+      }
+    ]
+  })
+
+  depends_on = [module.s3_images_bucket]
 }

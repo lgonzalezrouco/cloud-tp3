@@ -60,3 +60,12 @@ output "aws_region" {
   value       = var.aws_region
 }
 
+output "images_bucket_name" {
+  description = "Name of the S3 bucket for product images"
+  value       = module.s3_images_bucket.bucket_id
+}
+
+output "images_bucket_url" {
+  description = "URL of the S3 bucket for product images"
+  value       = "https://${module.s3_images_bucket.bucket_id}.s3.${var.aws_region}.amazonaws.com"
+}

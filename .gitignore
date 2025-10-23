@@ -6,4 +6,20 @@ terraform.tfstate.backup
 /dist
 /frontend-source
 
+# Environment and sensitive files
 .env
+terraform.tfvars
+*.tfvars
+!terraform.tfvars.example
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+/lambda/node_modules
+backend-source/
