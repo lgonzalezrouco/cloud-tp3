@@ -19,7 +19,7 @@ Infraestructura como código (IaC) usando Terraform para desplegar una aplicaci�
 
 ## 🚀 Inicio Rápido
 
-### 1. Configurar Variables
+### 1. Configurar Variables (Opcional)
 
 Edita `variables.tf` o crea un archivo `terraform.tfvars`:
 
@@ -62,18 +62,6 @@ terraform apply
 terraform apply -var="use_dockerhub=true"
 ```
 
-### 4. Desplegar Frontend
-
-Después de que `terraform apply` termine, construye el frontend:
-
-```bash
-# Linux/Mac/Git Bash
-bash build_frontend.sh
-
-# Windows PowerShell (si no tienes Git Bash)
-.\build_frontend.bat
-```
-
 ## 🔀 Configuración de Imagen del Backend
 
 ### Opción 1: ECR con Build Automático (default)
@@ -110,23 +98,13 @@ cloud-tp3/
 ├── vpc.tf                  # VPC y networking
 ├── modules/                # Módulos personalizados
 │   └── s3/                 # Módulo S3
-├── frontend-source/        # Código fuente del frontend (Vue.js)
 ├── scripts/                # Scripts de build multiplataforma
 │   ├── build_backend.sh    # Build backend (Linux/Mac)
 │   ├── build_backend.ps1   # Build backend (Windows)
-│   ├── build_frontend.sh   # Build frontend (Linux/Mac)
-│   └── build_frontend.ps1  # Build frontend (Windows)
-├── build_backend.tf        # Terraform: automatiza build del backend
-├── DEPLOY.md               # Guía completa de despliegue
+├── build_frontend.sh   # Build frontend (Linux/Mac)
+│── build_frontend.ps1  # Build frontend (Windows)
 └── README.md               # Este archivo
 ```
-
-## 📚 Documentación
-
-- [**QUICKSTART.md**](QUICKSTART.md) - ⚡ Inicio rápido (empieza aquí)
-- [**DEPLOY.md**](DEPLOY.md) - Guía completa de despliegue
-- [**WINDOWS_SETUP.md**](WINDOWS_SETUP.md) - Configuración en Windows
-- [**README_SCRIPTS.md**](README_SCRIPTS.md) - Información adicional sobre scripts
 
 ## 🔍 Outputs Útiles
 
@@ -160,21 +138,6 @@ terraform apply -replace='null_resource.backend_image[0]'
 bash scripts/build_backend.sh           # Linux/Mac/Git Bash
 .\scripts\build_backend.ps1             # Windows sin Git Bash
 ```
-
-### Actualizar Frontend
-```bash
-bash scripts/build_frontend.sh          # Linux/Mac
-.\scripts\build_frontend.ps1            # Windows
-```
-
-### Actualizar Backend (con Docker Hub)
-1. Sube nueva imagen a Docker Hub manualmente
-2. ```bash
-   aws ecs update-service \
-     --cluster $(terraform output -raw ecs_cluster_name) \
-     --service $(terraform output -raw ecs_service_name) \
-     --force-new-deployment
-   ```
 
 ### Actualizar Infraestructura
 ```bash
@@ -214,38 +177,7 @@ terraform apply
 
 ## 🔐 Seguridad
 
-- Security Groups configurados con reglas mínimas necesarias
+- Security Groups configurados con reglas necesarias
 - RDS en subnets privadas
 - Escaneo automático de vulnerabilidades en ECR
 - IAM Roles con permisos específicos (LabRole)
-
-## 💰 Costos Estimados
-
-Recursos principales (us-east-1):
-- **ECS Fargate**: ~$30-50/mes (2 tareas, 0.5 vCPU, 1GB RAM)
-- **RDS db.t3.micro**: ~$15/mes
-- **ALB**: ~$20/mes
-- **S3**: <$1/mes
-- **ECR**: ~$0.10/GB/mes
-
-**Total estimado**: ~$65-85/mes
-
-## 🐛 Troubleshooting
-
-### ECS no puede pull de ECR
-- Verifica que la imagen exista: `aws ecr list-images --repository-name matchmarket-backend`
-- Revisa los logs: `aws logs tail /ecs/MatchMarket --follow`
-
-### Frontend no se actualiza
-- Limpiar cache del bucket S3 o usar versionado de archivos
-- Verificar que el build fue exitoso
-
-### Base de datos no conecta
-- Verificar security groups
-- Verificar que el backend esté en las subnets privadas correctas
-
-## 📞 Soporte
-
-Para más información, revisa la documentación:
-- **Despliegue completo**: [DEPLOY.md](DEPLOY.md)
-- **Scripts multiplataforma**: `scripts/` directory
