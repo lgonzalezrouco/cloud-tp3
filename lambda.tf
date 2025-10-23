@@ -15,7 +15,7 @@ resource "aws_lambda_function" "cognito_callback" {
 
   environment {
     variables = {
-      COGNITO_DOMAIN  = "https://${aws_cognito_user_pool_domain.main.domain}.auth.${var.aws_region}.amazoncognito.com"
+      COGNITO_DOMAIN  = "${aws_cognito_user_pool_domain.main.domain}.auth.${var.aws_region}.amazoncognito.com"
       COGNITO_REGION  = var.aws_region
       CLIENT_ID       = aws_cognito_user_pool_client.main.id
       CLIENT_SECRET   = var.client_secret != "" ? var.client_secret : (var.client_secret_arn != "" ? data.aws_secretsmanager_secret_version.client_secret[0].secret_string : "")

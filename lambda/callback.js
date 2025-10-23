@@ -30,7 +30,7 @@ export const handler = async (event) => {
 
   const { code } = event.queryStringParameters;
 
-  const cognitoDomain = `https://${process.env.COGNITO_DOMAIN}.auth.${process.env.COGNITO_REGION}.amazoncognito.com`;
+  const cognitoDomain = `https://${process.env.COGNITO_DOMAIN}`;
   const clientId = process.env.CLIENT_ID;
   const clientSecret = process.env.CLIENT_SECRET;
   const redirectUri = `${process.env.REDIRECT_URI}/callback`;
