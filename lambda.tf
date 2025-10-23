@@ -15,12 +15,12 @@ resource "aws_lambda_function" "cognito_callback" {
 
   environment {
     variables = {
-      COGNITO_DOMAIN  = var.cognito_domain
+      COGNITO_DOMAIN  = "https://${aws_cognito_user_pool_domain.main.domain}.auth.${var.aws_region}.amazoncognito.com"
       COGNITO_REGION  = var.aws_region
-      CLIENT_ID       = var.cognito_client_id
+      CLIENT_ID       = aws_cognito_user_pool_client.main.id
       CLIENT_SECRET   = var.client_secret != "" ? var.client_secret : (var.client_secret_arn != "" ? data.aws_secretsmanager_secret_version.client_secret[0].secret_string : "")
-      REDIRECT_URI    = var.cognito_redirect_uri
-      FRONTEND_URL    = var.frontend_url
+      REDIRECT_URI    = "${aws_apigatewayv2_api.callback_api.api_endpoint}/${aws_apigatewayv2_stage.prod.name}/callback"
+      FRONTEND_URL    = "https://${module.s3_bucket.bucket_name}.s3-website-${var.aws_region}.amazonaws.com"
     }
   }
 

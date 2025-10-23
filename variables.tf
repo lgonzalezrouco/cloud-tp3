@@ -57,12 +57,6 @@ variable "cognito_domain" {
   default     = "cognito-domain"
 }
 
-variable "cognito_client_id" {
-  description = "Client ID de la app cliente en Cognito"
-  type        = string
-  default     = "client-id"
-}
-
 variable "client_secret" {
   description = "Client secret (opcional). Si está vacío, puede usarse client_secret_arn."
   type        = string
