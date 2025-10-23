@@ -6,6 +6,9 @@ FRONTEND_REPO="https://github.com/gcandisano/CloudFront.git"
 FRONTEND_DIR="frontend-source"
 ALB_URL=$1
 IMAGES_BUCKET_URL=$2
+COGNITO_DOMAIN=$3
+COGNITO_CLIENT_ID=$4
+REDIRECT_URI=$5
 
 if [ -z "$ALB_URL" ]; then
     echo "Error: ALB URL is required as first argument"
@@ -43,10 +46,9 @@ VITE_API_BASE_URL=http://${ALB_URL}
 VITE_S3_URL=${IMAGES_BUCKET_URL}
 VITE_APP_TITLE=Match Market
 VITE_APP_DESCRIPTION=Tu marketplace de confianza
-VITE_COGNITO_DOMAIN=asd
-VITE_COGNITO_CLIENT_ID=asd
-VITE_REDIRECT_URI=asd
-VITE_FRONTEND_URL=asd
+VITE_COGNITO_DOMAIN=${COGNITO_DOMAIN}
+VITE_COGNITO_CLIENT_ID=${COGNITO_CLIENT_ID}
+VITE_REDIRECT_URI=${REDIRECT_URI}
 EOF
 
 echo "Installing dependencies..."
