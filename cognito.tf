@@ -52,6 +52,8 @@ resource "aws_cognito_user_pool_client" "main" {
   # Callback URLs - API Gateway will handle the callback
   callback_urls = [
     "https://${aws_apigatewayv2_api.callback_api.id}.execute-api.${var.aws_region}.amazonaws.com/prod/callback",
+    "${aws_apigatewayv2_api.callback_api.api_endpoint}/${aws_apigatewayv2_stage.prod.name}/callback",
+    "https://${aws_apigatewayv2_api.callback_api.api_endpoint}/${aws_apigatewayv2_stage.prod.name}/callback",
     "http://localhost:5173/callback" # For local development
   ]
   
