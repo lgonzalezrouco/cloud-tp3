@@ -60,6 +60,12 @@ output "aws_region" {
   value       = var.aws_region
 }
 
+
+output "lambda_callback_url" {
+  description = "URL pública de la Lambda de callback Cognito (si se creó)"
+  value       = aws_lambda_function_url.callback_url.function_url
+}
+
 output "images_bucket_name" {
   description = "Name of the S3 bucket for product images"
   value       = module.s3_images_bucket.bucket_id
