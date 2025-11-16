@@ -1,18 +1,23 @@
 # Recurso para construir el frontend automáticamente
 resource "null_resource" "build_frontend" {
-  # Trigger: rebuild cuando cambie el DNS del ALB
+  # Trigger: rebuild cuando cambie el DNS del ALB o configuración de Cognito
   triggers = {
-    alb_dns = module.alb.dns_name
+    alb_dns           = module.alb.dns_name
+    cognito_client_id = aws_cognito_user_pool_client.matchmarket_spa_client.id
+    cognito_pool_id   = aws_cognito_user_pool.matchmarket_user_pool.id
   }
-
-  # Asegurar que el ALB esté creado antes de construir
-  depends_on = [module.alb]
 
   provisioner "local-exec" {
     # Detectar sistema operativo y usar el script apropiado
-    command     = substr(pathexpand("~"), 0, 1) == "/" ? "bash build_frontend.sh ${module.alb.dns_name} https://${module.s3_images_bucket.bucket_id}.s3.${var.aws_region}.amazonaws.com a s d" : "build_frontend.bat ${module.alb.dns_name} https://${module.s3_images_bucket.bucket_id}.s3.${var.aws_region}.amazonaws.com a s m"
+    # For direct authentication: passing user pool ID and client ID (domain and redirect URI not needed)
+    command     = substr(pathexpand("~"), 0, 1) == "/" ? "bash build_frontend.sh ${module.alb.dns_name} https://${module.s3_images_bucket.bucket_id}.s3.${var.aws_region}.amazonaws.com ${aws_cognito_user_pool.matchmarket_user_pool.id} ${aws_cognito_user_pool_client.matchmarket_spa_client.id}" : "build_frontend.bat ${module.alb.dns_name} https://${module.s3_images_bucket.bucket_id}.s3.${var.aws_region}.amazonaws.com ${aws_cognito_user_pool.matchmarket_user_pool.id} ${aws_cognito_user_pool_client.matchmarket_spa_client.id}"
     interpreter = substr(pathexpand("~"), 0, 1) == "/" ? ["bash", "-c"] : ["cmd", "/C"]
   }
+
+  depends_on = [
+    module.alb,
+    aws_cognito_user_pool_client.matchmarket_spa_client
+  ]
 }
 
 # Output para mostrar la URL del backend configurada

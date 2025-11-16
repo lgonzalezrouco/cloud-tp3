@@ -6,9 +6,8 @@ FRONTEND_REPO="https://github.com/gcandisano/CloudFront.git"
 FRONTEND_DIR="frontend-source"
 ALB_URL=$1
 IMAGES_BUCKET_URL=$2
-COGNITO_DOMAIN=$3
+COGNITO_USER_POOL_ID=$3
 COGNITO_CLIENT_ID=$4
-REDIRECT_URI=$5
 
 if [ -z "$ALB_URL" ]; then
     echo "Error: ALB URL is required as first argument"
@@ -17,6 +16,16 @@ fi
 
 if [ -z "$IMAGES_BUCKET_URL" ]; then
     echo "Error: Images bucket URL is required as second argument"
+    exit 1
+fi
+
+if [ -z "$COGNITO_USER_POOL_ID" ]; then
+    echo "Error: Cognito User Pool ID is required as third argument"
+    exit 1
+fi
+
+if [ -z "$COGNITO_CLIENT_ID" ]; then
+    echo "Error: Cognito Client ID is required as fourth argument"
     exit 1
 fi
 
@@ -39,16 +48,18 @@ fi
 
 cd "$FRONTEND_DIR"
 
-# Create .env file with ALB URL and Images Bucket URL
+# Create .env file with required configuration
 echo "Creating .env file..."
 cat > .env << EOF
-VITE_API_BASE_URL=http://${ALB_URL}
-VITE_S3_URL=${IMAGES_BUCKET_URL}
-VITE_APP_TITLE=Match Market
-VITE_APP_DESCRIPTION=Tu marketplace de confianza
-VITE_COGNITO_DOMAIN=${COGNITO_DOMAIN}
+# AWS Cognito Configuration
+VITE_COGNITO_USER_POOL_ID=${COGNITO_USER_POOL_ID}
 VITE_COGNITO_CLIENT_ID=${COGNITO_CLIENT_ID}
-VITE_REDIRECT_URI=${REDIRECT_URI}
+
+# S3 Configuration
+VITE_S3_URL=${IMAGES_BUCKET_URL}
+
+# API BASE URL
+VITE_API_BASE_URL=http://${ALB_URL}
 EOF
 
 echo "Installing dependencies..."

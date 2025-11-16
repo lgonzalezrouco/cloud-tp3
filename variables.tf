@@ -50,34 +50,3 @@ variable "dockerhub_image" {
   description = "Imagen de Docker Hub a usar cuando use_dockerhub = true"
   type        = string
 }
-
-variable "cognito_domain" {
-  description = "Cognito domain prefix (ej: mi-userpool)"
-  type        = string
-  default     = "cognito-domain"
-}
-
-variable "client_secret" {
-  description = "Client secret (opcional). Si está vacío, puede usarse client_secret_arn."
-  type        = string
-  default     = "client-secret"
-  sensitive   = true
-}
-
-variable "client_secret_arn" {
-  description = "ARN del secreto en AWS Secrets Manager que contiene el client secret (opcional)"
-  type        = string
-  default     = ""
-}
-
-variable "cognito_redirect_uri" {
-  description = "Redirect URI base (sin /callback) que configuraste en Cognito"
-  type        = string
-  default     = "redirect-uri"
-}
-
-variable "frontend_url" {
-  description = "URL pública del frontend para hacer el redirect con tokens"
-  type        = string
-  default     = "frontend-url"
-}
