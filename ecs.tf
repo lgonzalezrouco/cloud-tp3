@@ -82,6 +82,10 @@ resource "aws_ecs_task_definition" "backend" {
         {
           name  = "COGNITO_REGION"
           value = var.aws_region
+        },
+        {
+          name  = "AWS_SNS_TOPIC_ARN"
+          value = aws_sns_topic.product_newsletter.arn
         }
       ]
       logConfiguration = {
