@@ -70,6 +70,18 @@ resource "aws_ecs_task_definition" "backend" {
         {
           name  = "AWS_S3_BUCKET"
           value = var.s3_bucket_name
+        },
+        {
+          name  = "COGNITO_USER_POOL_ID"
+          value = aws_cognito_user_pool.matchmarket_user_pool.id
+        },
+        {
+          name  = "COGNITO_CLIENT_ID"
+          value = aws_cognito_user_pool_client.matchmarket_spa_client.id
+        },
+        {
+          name  = "COGNITO_REGION"
+          value = var.aws_region
         }
       ]
       logConfiguration = {
