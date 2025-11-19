@@ -14,7 +14,7 @@ db_username = "postgres"
 db_password = "CHANGE-ME-TO-A-STRONG-PASSWORD"  # IMPORTANT: Use a strong password!
 
 # S3 Configuration
-s3_bucket_name = "matchmarket-images"  # Must be globally unique
+s3_bucket_name = "matchmarket"  # Must be globally unique
 
 # Docker Configuration
 use_dockerhub   = false
