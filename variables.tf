@@ -10,20 +10,23 @@ variable "app_name" {
   type        = string
 }
 
+variable "vpc_cidr" {
+  default     = "10.0.0.0/16"
+  description = "CIDR block for VPC"
+  type        = string
+}
+
 variable "db_name" {
-  default     = "matchmarket"
   description = "Name of the database"
   type        = string
 }
 
 variable "db_username" {
-  default     = "postgres"
   description = "Username of the database"
   type        = string
 }
 
 variable "db_password" {
-  default     = "tp-cloud-g7"
   description = "Password of the database"
   type        = string
   sensitive   = true
@@ -48,5 +51,11 @@ variable "use_dockerhub" {
 variable "dockerhub_image" {
   default     = "emin364/cloud-backend:latest"
   description = "Imagen de Docker Hub a usar cuando use_dockerhub = true"
+  type        = string
+}
+
+variable "environment" {
+  default     = "production"
+  description = "Environment to deploy the application"
   type        = string
 }

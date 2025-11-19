@@ -1,16 +1,16 @@
 output "website_url" {
   description = "URL del sitio web estático en S3"
-  value       = "http://${module.s3_bucket.bucket_name}.s3-website-${var.aws_region}.amazonaws.com"
+  value       = "http://${module.matchmarket_images.bucket_name}.s3-website-${var.aws_region}.amazonaws.com"
 }
 
 output "bucket_name" {
   description = "Nombre del bucket S3"
-  value       = module.s3_bucket.bucket_name
+  value       = module.matchmarket_images.bucket_name
 }
 
 output "alb_dns_name" {
   description = "DNS name del Application Load Balancer"
-  value       = module.alb.dns_name
+  value       = module.backend_load_balancer.dns_name
 }
 
 output "db_endpoint" {
@@ -67,7 +67,7 @@ output "images_bucket_name" {
 
 output "images_bucket_url" {
   description = "URL of the S3 bucket for product images"
-  value       = "https://${module.s3_images_bucket.bucket_id}.s3.${var.aws_region}.amazonaws.com"
+  value       = "https://${module.s3_images_bucket.bucket_regional_domain_name}"
 }
 
 output "cognito_user_pool_id" {

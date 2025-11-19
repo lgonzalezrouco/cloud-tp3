@@ -54,7 +54,7 @@ resource "aws_cognito_user_pool" "matchmarket_user_pool" {
   }
 
   tags = {
-    Environment = "dev"
+    Environment = var.environment
     Project     = "MatchMarket"
   }
 }

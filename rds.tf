@@ -1,7 +1,7 @@
 module "db" {
   source  = "terraform-aws-modules/rds/aws"
 
-  identifier = "matchmarket-db2"
+  identifier = "${var.app_name}-db"
 
   engine               = "postgres"
   engine_version       = "17.4"
@@ -9,7 +9,7 @@ module "db" {
   allocated_storage    = 20
   max_allocated_storage = 100            # Auto-scaling enabled up to 100GB
   storage_type         = "gp2"
-  major_engine_version = "17.4"
+  major_engine_version = "17"
   family               = "postgres17"
   multi_az             = true
 
@@ -22,8 +22,7 @@ module "db" {
 
   tags = {
     Owner       = var.app_name
-    Environment = "production"
-    ManagedBy   = "Terraform"
+    Environment = var.environment
   }
 
   # DB subnet group

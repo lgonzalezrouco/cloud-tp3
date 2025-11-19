@@ -5,7 +5,7 @@ resource "aws_cloudwatch_log_group" "ecs_logs" {
 
   tags = {
     Application = var.app_name
-    Environment = "production"
+    Environment = var.environment
   }
 }
 
@@ -20,8 +20,7 @@ resource "aws_ecs_cluster" "this" {
 
   tags = {
     Application = var.app_name
-    Environment = "production"
-    ManagedBy   = "Terraform"
+    Environment = var.environment
   }
 }
 
@@ -94,13 +93,13 @@ resource "aws_ecs_service" "backend" {
   launch_type     = "FARGATE"
 
   network_configuration {
-    subnets          = module.vpc.private_subnets
+    subnets          = [module.vpc.private_subnets[1], module.vpc.private_subnets[2]]
     security_groups  = [module.backend_sg.security_group_id]
     assign_public_ip = false
   }
 
   load_balancer {
-    target_group_arn = module.alb.target_groups["backend"].arn
+    target_group_arn = module.backend_load_balancer.target_groups["backend"].arn
     container_name   = "backend"
     container_port   = 3000
   }
@@ -113,13 +112,12 @@ resource "aws_ecs_service" "backend" {
 
   tags = {
     Application = var.app_name
-    Environment = "production"
-    ManagedBy   = "Terraform"
+    Environment = var.environment
   }
 
   # Ensure ALB and database are ready before deploying service
   depends_on = [
-    module.alb,
+    module.backend_load_balancer,
     module.db
   ]
 }

@@ -15,7 +15,7 @@ module "backend_sg" {
   source = "terraform-aws-modules/security-group/aws"
 
   name        = "backend_sg"
-  description = "Security group for alb with custom ports open within VPC"
+  description = "Security group for backend with custom ports open within VPC"
   vpc_id      = module.vpc.vpc_id
 
   # This is the corrected block

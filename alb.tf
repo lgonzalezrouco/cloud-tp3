@@ -1,7 +1,7 @@
-module "alb" {
+module "backend_load_balancer" {
   source  = "terraform-aws-modules/alb/aws"
 
-  name     = "${var.app_name}-alb"
+  name     = "${var.app_name}-backend-alb"
   vpc_id   = module.vpc.vpc_id
   subnets  = module.vpc.public_subnets
   internal = false
@@ -49,7 +49,7 @@ module "alb" {
 
 
   tags = {
-    Environment = "Development"
+    Environment = var.environment
     Project     = var.app_name
   }
 }

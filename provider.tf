@@ -10,6 +10,10 @@ terraform {
       source  = "hashicorp/time"
       version = "~> 0.9"
     }
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.92"
+    }
   }
 }
 
@@ -19,7 +23,7 @@ provider "aws" {
   default_tags {
     tags = {
       Project     = var.app_name
-      Environment = "production"
+      Environment = var.environment
       ManagedBy   = "Terraform"
     }
   }
