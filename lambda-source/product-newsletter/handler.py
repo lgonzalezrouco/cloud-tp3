@@ -44,7 +44,6 @@ def lambda_handler(event, context):
         for product in products:
             pid, name, desc, category, price, image = product
             email_body += f"📦 {name}\n"
-            email_body += f"   ID: {pid}\n"
             email_body += f"   Categoría: {category}\n"
             email_body += f"   Precio: ${price:.2f}\n"
             if desc:
