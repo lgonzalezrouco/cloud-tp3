@@ -1,4 +1,4 @@
-module "matchmarket_images" {
+module "matchmarket_website" {
   source              = "./modules/s3"
   bucket_name         = var.s3_bucket_name
   block_public_access = false # Allow public access for website hosting
@@ -10,7 +10,7 @@ module "matchmarket_images" {
 
 # Configuración de website hosting
 resource "aws_s3_bucket_website_configuration" "frontend" {
-  bucket = module.matchmarket_images.bucket_id
+  bucket = module.matchmarket_website.bucket_id
 
   index_document {
     suffix = "index.html"
@@ -23,7 +23,7 @@ resource "aws_s3_bucket_website_configuration" "frontend" {
 
 # Bucket policy para permitir acceso público de lectura
 resource "aws_s3_bucket_policy" "frontend" {
-  bucket = module.matchmarket_images.bucket_id
+  bucket = module.matchmarket_website.bucket_id
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -33,17 +33,17 @@ resource "aws_s3_bucket_policy" "frontend" {
         Effect    = "Allow"
         Principal = "*"
         Action    = "s3:GetObject"
-        Resource  = "${module.matchmarket_images.bucket_arn}/*"
+        Resource  = "${module.matchmarket_website.bucket_arn}/*"
       }
     ]
   })
 
-  depends_on = [module.matchmarket_images, aws_s3_bucket_website_configuration.frontend]
+  depends_on = [module.matchmarket_website, aws_s3_bucket_website_configuration.frontend]
 }
 
 # Subir index.html
 resource "aws_s3_object" "index" {
-  bucket       = module.matchmarket_images.bucket_id
+  bucket       = module.matchmarket_website.bucket_id
   key          = "index.html"
   source       = "dist/index.html"
   content_type = "text/html"
@@ -55,7 +55,7 @@ resource "aws_s3_object" "index" {
 
 # Subir favicon.ico
 resource "aws_s3_object" "favicon" {
-  bucket       = module.matchmarket_images.bucket_id
+  bucket       = module.matchmarket_website.bucket_id
   key          = "favicon.ico"
   source       = "dist/favicon.ico"
   content_type = "image/x-icon"
@@ -70,7 +70,7 @@ resource "aws_s3_object" "css_files" {
 
   depends_on = [null_resource.build_frontend]
 
-  bucket       = module.matchmarket_images.bucket_id
+  bucket       = module.matchmarket_website.bucket_id
   key          = "assets/${each.value}"
   source       = "dist/assets/${each.value}"
   content_type = "text/css"
@@ -83,7 +83,7 @@ resource "aws_s3_object" "js_files" {
 
   depends_on = [null_resource.build_frontend]
 
-  bucket       = module.matchmarket_images.bucket_id
+  bucket       = module.matchmarket_website.bucket_id
   key          = "assets/${each.value}"
   source       = "dist/assets/${each.value}"
   content_type = "application/javascript"

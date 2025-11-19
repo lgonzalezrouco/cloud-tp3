@@ -1,11 +1,11 @@
 output "website_url" {
   description = "URL del sitio web estático en S3"
-  value       = "http://${module.matchmarket_images.bucket_name}.s3-website-${var.aws_region}.amazonaws.com"
+  value       = "http://${module.matchmarket_website.bucket_name}.s3-website-${var.aws_region}.amazonaws.com"
 }
 
 output "bucket_name" {
   description = "Nombre del bucket S3"
-  value       = module.matchmarket_images.bucket_name
+  value       = module.matchmarket_website.bucket_name
 }
 
 output "alb_dns_name" {
