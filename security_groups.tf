@@ -44,6 +44,11 @@ module "rds_sg" {
       description              = "Allow PostgreSQL from backend"
       rule                     = "postgresql-tcp"
       source_security_group_id = module.backend_sg.security_group_id
+    },
+    {
+      description              = "Allow PostgreSQL from newsletter Lambda"
+      rule                     = "postgresql-tcp"
+      source_security_group_id = module.newsletter_lambda_sg.security_group_id
     }
   ]
 

@@ -90,3 +90,8 @@ output "newsletter_sns_topic_arn" {
   description = "ARN del topic SNS para newsletter"
   value       = aws_sns_topic.product_newsletter.arn
 }
+output "newsletter_lambda_name" {
+  description = "Nombre de la Lambda de newsletter"
+  value       = aws_lambda_function.product_newsletter.function_name
+}
+
