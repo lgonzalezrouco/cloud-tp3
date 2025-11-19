@@ -53,7 +53,7 @@ resource "aws_lambda_function" "product_newsletter" {
   }
 
   vpc_config {
-    subnet_ids         = module.vpc.private_subnets
+    subnet_ids          = [module.vpc.private_subnets[0], module.vpc.private_subnets[1]]
     security_group_ids = [module.newsletter_lambda_sg.security_group_id]
   }
 

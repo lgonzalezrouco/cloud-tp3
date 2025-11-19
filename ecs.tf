@@ -109,7 +109,7 @@ resource "aws_ecs_service" "backend" {
   launch_type     = "FARGATE"
 
   network_configuration {
-    subnets          = [module.vpc.private_subnets[1], module.vpc.private_subnets[2]]
+    subnets          = [module.vpc.private_subnets[0], module.vpc.private_subnets[1]]
     security_groups  = [module.backend_sg.security_group_id]
     assign_public_ip = false
   }
