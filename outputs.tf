@@ -84,3 +84,9 @@ output "cognito_region" {
   description = "AWS region where Cognito is deployed"
   value       = var.aws_region
 }
+
+
+output "newsletter_sns_topic_arn" {
+  description = "ARN del topic SNS para newsletter"
+  value       = aws_sns_topic.product_newsletter.arn
+}
