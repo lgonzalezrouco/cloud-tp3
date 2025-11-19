@@ -69,7 +69,7 @@ resource "aws_ecs_task_definition" "backend" {
         },
         {
           name  = "AWS_S3_BUCKET"
-          value = var.s3_bucket_name
+          value = "${var.s3_bucket_name}-images"
         },
         {
           name  = "COGNITO_USER_POOL_ID"
