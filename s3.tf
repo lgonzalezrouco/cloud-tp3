@@ -115,7 +115,7 @@ resource "aws_s3_bucket_cors_configuration" "images_cors" {
   }
 }
 
-# Bucket policy for public read access to images (upload requires authentication)
+# Bucket policy for public read/write access to images
 resource "aws_s3_bucket_policy" "images_public" {
   bucket = module.s3_images_bucket.bucket_id
 
@@ -128,6 +128,16 @@ resource "aws_s3_bucket_policy" "images_public" {
         Principal = "*"
         Action    = "s3:GetObject"
         Resource  = "${module.s3_images_bucket.bucket_arn}/*"
+      },
+      {
+        Sid       = "PublicWritePutObject"
+        Effect    = "Allow"
+        Principal = "*"
+        Action    = [
+          "s3:PutObject",
+          "s3:PutObjectAcl"
+        ]
+        Resource = "${module.s3_images_bucket.bucket_arn}/*"
       }
     ]
   })
